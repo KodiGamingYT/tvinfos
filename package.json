@@ -1,5 +1,5 @@
 {
-  "name": "@yournpmusername/hello-tizenbrew",
+  "name": "@kodigamingyt/tizenmodule",
   "version": "1.0.0",
   "description": "A basic Hello World module for TizenBrew, demonstrating remote key handling.",
   "main": "index.html",
