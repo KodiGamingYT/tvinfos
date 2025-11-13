@@ -2,49 +2,147 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <!-- Tizen/TV specific viewport setup -->
     <meta name="viewport" content="width=1920, user-scalable=no" /> 
-    <title>Hello Brew Module</title>
-    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <title>TV System Status</title>
     
-    <!-- Assuming css/main.css exists and provides basic styling for TV -->
     <style>
+        /* General styling for TV environment */
         body {
-            background-color: #2c3e50;
-            color: #ecf0f1;
-            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            text-align: center;
+            padding: 50px 0;
+            min-height: 100vh;
         }
         h1 {
-            font-size: 6rem;
-            margin-bottom: 20px;
+            font-size: 4rem;
+            margin-bottom: 40px;
+            color: #4CAF50; /* Green theme */
         }
-        #status {
+        .section-title {
+            width: 80%;
+            max-width: 1200px;
+            font-size: 2.5rem;
+            color: #4CAF50;
+            border-bottom: 2px solid #222;
+            padding-bottom: 10px;
+            margin: 40px 0 20px 0;
+            text-align: left;
+        }
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            width: 80%;
+            max-width: 1200px;
+        }
+        .card {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #bbbbbb;
+        }
+        .card-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #00bcd4; /* Light blue accent */
+        }
+        .card-value.small {
             font-size: 2rem;
-            color: #3498db;
-            padding: 15px;
-            border: 2px solid #3498db;
-            border-radius: 10px;
+            word-wrap: break-word;
+        }
+        .cpu-bar, .storage-bar {
+            height: 15px;
+            background-color: #333;
+            border-radius: 8px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+        .cpu-fill, .storage-fill {
+            height: 100%;
+            background-color: #ff9800; /* Orange for CPU/Storage */
+            transition: width 0.5s ease;
+            border-radius: 8px;
+        }
+
+        /* Remote instruction footer */
+        .footer {
+            margin-top: 50px;
+            font-size: 1.2rem;
+            color: #777;
         }
     </style>
 </head>
-<!-- Initializing the script on body load -->
-<body onload="main.init();">
-    <div id="app">
-        <h1>Hello TizenBrew World!</h1>
-        <p id="status">Press ENTER on your TV remote.</p>
+<body onload="SystemDashboard.init();">
+    <h1>Tizen TV Health Monitor</h1>
+    
+    <div class="section-title">General Info & Platform</div>
+    <div class="dashboard-container">
+        <!-- 1. Model & Platform -->
+        <div class="card">
+            <div class="card-title">Model Name / Tizen Version</div>
+            <div class="card-value small" id="model-name">Loading...</div>
+            <div class="card-value small" id="tizen-version"></div>
+        </div>
+
+        <!-- 2. Display Resolution -->
+        <div class="card">
+            <div class="card-title">Display Resolution</div>
+            <div class="card-value" id="display-resolution">Loading...</div>
+        </div>
     </div>
     
-    <!-- TizenBrew's loader script is injected via $TIZENBREW_JS_URL$ -->
+    <div class="section-title">Performance & Resources</div>
+    <div class="dashboard-container">
+        <!-- 3. CPU Load -->
+        <div class="card">
+            <div class="card-title">CPU Load (Usage)</div>
+            <div class="card-value" id="cpu-load">--%</div>
+            <div class="cpu-bar">
+                <div class="cpu-fill" id="cpu-fill" style="width: 0%;"></div>
+            </div>
+        </div>
+        
+        <!-- 4. Memory -->
+        <div class="card">
+            <div class="card-title">Total Memory (RAM)</div>
+            <div class="card-value small" id="memory-total">Loading...</div>
+            <div class="card-value small" id="memory-available"></div>
+        </div>
+
+        <!-- 5. Network Status -->
+        <div class="card">
+            <div class="card-title">Network Status</div>
+            <div class="card-value small" id="network-status">Loading...</div>
+            <div class="card-value small" id="ip-address"></div>
+        </div>
+
+        <!-- 6. Storage -->
+        <div class="card">
+            <div class="card-title">Storage (Internal)</div>
+            <div class="card-value small" id="storage-available">Loading...</div>
+            <div class="storage-bar">
+                <div class="storage-fill" id="storage-fill" style="width: 0%;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Data refreshed every 2 seconds. Press Back/Return to exit.
+    </div>
+    
     <script type="text/javascript" src="$TIZENBREW_JS_URL$"></script>
-    <!-- Your custom application logic -->
     <script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>
+
 
