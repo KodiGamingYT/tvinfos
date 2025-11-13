@@ -74,6 +74,20 @@
             border-radius: 8px;
         }
 
+        /* Tizen API Checkbox Style */
+        #tizen-api-check {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            background-color: #555;
+            color: #fff;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
         /* Remote instruction footer */
         .footer {
             margin-top: 50px;
@@ -81,8 +95,23 @@
             color: #777;
         }
     </style>
+    
+    <script>
+        // Check 1: Inline check to see if Tizen object exists when the HTML finishes loading
+        window.addEventListener('load', function() {
+            var checkElement = document.getElementById('tizen-api-check');
+            if (typeof tizen === 'object' && typeof tizen.systeminfo === 'object') {
+                checkElement.textContent = "Tizen API: SUCCESS (Object Found)";
+                checkElement.style.backgroundColor = '#4CAF50'; /* Green */
+            } else {
+                checkElement.textContent = "Tizen API: FAILED (Object Missing)";
+                checkElement.style.backgroundColor = '#F44336'; /* Red */
+            }
+        });
+    </script>
 </head>
 <body onload="SystemDashboard.init();">
+    <div id="tizen-api-check">Performing Tizen API check...</div>
     <h1>Tizen TV Health Monitor</h1>
     
     <div class="section-title">General Info & Platform</div>
@@ -141,7 +170,8 @@
     </div>
     
     <script type="text/javascript" src="$TIZENBREW_JS_URL$"></script>
-    <script type="text/javascript" src="js/main.js"></script>
+    <!-- Use a new version number to force a new download -->
+    <script type="text/javascript" src="js/main.js?v=1.1.3"></script> 
 </body>
 </html>
 
